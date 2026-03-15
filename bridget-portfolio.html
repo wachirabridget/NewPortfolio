@@ -1,0 +1,765 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Bridget Wanjiru Wachira — Product Designer</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=DM+Serif+Display:ital@0;1&family=Syne:wght@400;500;600;700;800&family=DM+Sans:ital,opsz,wght@0,9..40,300;0,9..40,400;0,9..40,500;1,9..40,300&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --bg: #F9F9F9;
+    --bg-white: #FFFFFF;
+    --ink: #1A1A1A;
+    --ink-soft: #6B7280;
+    --accent: #4F46E5;
+    --accent-2: #3B82F6;
+    --accent-hover: #2563EB;
+    --accent-pink: #EC4899;
+    --border: #E5E7EB;
+    --card-bg: #FFFFFF;
+    --proj-uni: #6366F1;    --proj-uni-bg: #EEF2FF;
+    --proj-afri: #10B981;   --proj-afri-bg: #ECFDF5;
+    --proj-maw: #F59E0B;    --proj-maw-bg: #FFFBEB;
+    --proj-health: #F43F5E; --proj-health-bg: #FFF1F2;
+    --nav-h: 72px;
+    --ease: cubic-bezier(0.4, 0, 0.2, 1);
+    --ease-out: cubic-bezier(0, 0, 0.2, 1);
+    --ease-spring: cubic-bezier(0.34, 1.56, 0.64, 1);
+  }
+  *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+  html { scroll-behavior: smooth; }
+  body { font-family: 'DM Sans', sans-serif; background: var(--bg); color: var(--ink); overflow-x: hidden; -webkit-font-smoothing: antialiased; }
+  @media (prefers-reduced-motion: reduce) { *, *::before, *::after { animation-duration: 0.001ms !important; transition-duration: 0.001ms !important; } }
+
+  /* NAV */
+  nav { position: fixed; top: 0; left: 0; right: 0; z-index: 100; height: var(--nav-h); display: flex; align-items: center; justify-content: space-between; padding: 0 5vw; background: rgba(249,249,249,0.88); backdrop-filter: blur(20px) saturate(1.6); border-bottom: 1px solid var(--border); transition: box-shadow 0.3s var(--ease); }
+  nav.scrolled { box-shadow: 0 4px 32px rgba(79,70,229,0.07); }
+  .nav-logo { font-family: 'DM Serif Display', serif; font-size: 1.25rem; color: var(--ink); text-decoration: none; letter-spacing: -0.01em; }
+  .nav-logo span { color: var(--accent); }
+  .nav-links { display: flex; gap: 2rem; align-items: center; list-style: none; }
+  .nav-links a { font-family: 'Syne', sans-serif; font-size: 0.78rem; font-weight: 600; letter-spacing: 0.08em; text-transform: uppercase; color: var(--ink-soft); text-decoration: none; transition: color 0.2s; position: relative; }
+  .nav-links a::after { content: ''; position: absolute; bottom: -3px; left: 0; right: 100%; height: 1.5px; background: linear-gradient(90deg, var(--accent), var(--accent-2)); transition: right 0.25s var(--ease); }
+  .nav-links a:hover { color: var(--ink); }
+  .nav-links a:hover::after { right: 0; }
+  .btn-nav { font-family: 'Syne', sans-serif; font-size: 0.78rem; font-weight: 700; letter-spacing: 0.06em; text-transform: uppercase; background: linear-gradient(135deg, var(--accent), var(--accent-2)); color: #fff; border: none; border-radius: 50px; padding: 10px 22px; cursor: pointer; text-decoration: none; transition: opacity 0.2s, transform 0.2s var(--ease-spring), box-shadow 0.2s; }
+  .btn-nav:hover { opacity: 0.87; transform: translateY(-1px); box-shadow: 0 6px 20px rgba(79,70,229,0.28); }
+
+  /* SECTIONS */
+  section { padding: 100px 5vw; }
+  .section-label { font-family: 'Syne', sans-serif; font-size: 0.72rem; font-weight: 700; letter-spacing: 0.14em; text-transform: uppercase; color: var(--accent); margin-bottom: 1rem; display: flex; align-items: center; gap: 0.6rem; }
+  .section-label::before { content: ''; display: block; width: 24px; height: 1.5px; background: linear-gradient(90deg, var(--accent), var(--accent-2)); }
+  h2.section-title { font-family: 'DM Serif Display', serif; font-size: clamp(2.2rem, 4vw, 3.4rem); line-height: 1.1; letter-spacing: -0.02em; margin-bottom: 1rem; }
+  .section-sub { font-size: 1rem; color: var(--ink-soft); max-width: 560px; line-height: 1.7; margin-bottom: 3.5rem; }
+
+  /* REVEAL */
+  .reveal { opacity: 0; transform: translateY(28px); transition: opacity 0.55s var(--ease-out), transform 0.55s var(--ease-out); }
+  .reveal.visible { opacity: 1; transform: translateY(0); }
+  .reveal-delay-1 { transition-delay: 0.1s; }
+  .reveal-delay-2 { transition-delay: 0.2s; }
+  .reveal-delay-3 { transition-delay: 0.3s; }
+
+  /* HERO */
+  #home { min-height: 100vh; display: flex; align-items: center; padding-top: calc(var(--nav-h) + 40px); position: relative; overflow: hidden; }
+  .hero-bg { position: absolute; inset: 0; z-index: 0; overflow: hidden; }
+  .blob { position: absolute; border-radius: 50%; filter: blur(90px); opacity: 0.6; animation: blobFloat 20s ease-in-out infinite; }
+  .blob-1 { width: 560px; height: 560px; background: radial-gradient(circle, #C7D2FE 0%, transparent 70%); top: -120px; right: -80px; }
+  .blob-2 { width: 440px; height: 440px; background: radial-gradient(circle, #A5B4FC 0%, transparent 70%); bottom: -60px; left: -100px; animation-delay: -9s; }
+  .blob-3 { width: 300px; height: 300px; background: radial-gradient(circle, #FBCFE8 0%, transparent 70%); top: 50%; left: 42%; animation-delay: -15s; opacity: 0.4; }
+  @keyframes blobFloat { 0%,100% { transform: translate(0,0) scale(1); } 33% { transform: translate(20px,-16px) scale(1.04); } 66% { transform: translate(-14px,20px) scale(0.97); } }
+
+  .hero-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 4rem; align-items: center; position: relative; z-index: 1; max-width: 1200px; width: 100%; }
+
+  .hero-eyebrow { font-family: 'Syne', sans-serif; font-size: 0.78rem; font-weight: 700; letter-spacing: 0.14em; text-transform: uppercase; background: linear-gradient(90deg, var(--accent), var(--accent-2)); -webkit-background-clip: text; -webkit-text-fill-color: transparent; background-clip: text; margin-bottom: 1.2rem; opacity: 0; transform: translateY(16px); animation: slideUp 0.5s 0.2s var(--ease-out) forwards; }
+  .hero-name { font-family: 'DM Serif Display', serif; font-size: clamp(2.8rem, 5.5vw, 5rem); line-height: 1.0; letter-spacing: -0.03em; margin-bottom: 1.5rem; opacity: 0; transform: translateY(24px); animation: slideUp 0.6s 0.35s var(--ease-out) forwards; }
+  .hero-name em { font-style: italic; background: linear-gradient(135deg, var(--accent), var(--accent-2)); -webkit-background-clip: text; -webkit-text-fill-color: transparent; background-clip: text; }
+  .hero-subtitle { font-size: 1.05rem; line-height: 1.75; color: var(--ink-soft); max-width: 480px; margin-bottom: 2.5rem; opacity: 0; transform: translateY(16px); animation: slideUp 0.55s 0.5s var(--ease-out) forwards; }
+  .hero-ctas { display: flex; gap: 1rem; flex-wrap: wrap; opacity: 0; transform: translateY(16px); animation: slideUp 0.55s 0.65s var(--ease-out) forwards; }
+  @keyframes slideUp { to { opacity: 1; transform: translateY(0); } }
+
+  .btn-primary { font-family: 'Syne', sans-serif; font-size: 0.82rem; font-weight: 700; letter-spacing: 0.06em; text-transform: uppercase; background: linear-gradient(135deg, var(--accent), var(--accent-2)); color: #fff; border: none; border-radius: 50px; padding: 14px 28px; cursor: pointer; text-decoration: none; display: inline-flex; align-items: center; gap: 8px; transition: opacity 0.2s, transform 0.22s var(--ease-spring), box-shadow 0.22s; }
+  .btn-primary:hover { opacity: 0.87; transform: translateY(-2px); box-shadow: 0 8px 28px rgba(79,70,229,0.3); }
+  .btn-primary:active { transform: translateY(0); }
+  .btn-outline { font-family: 'Syne', sans-serif; font-size: 0.82rem; font-weight: 700; letter-spacing: 0.06em; text-transform: uppercase; background: transparent; color: var(--ink); border: 1.5px solid var(--border); border-radius: 50px; padding: 13px 28px; cursor: pointer; text-decoration: none; display: inline-flex; align-items: center; gap: 8px; transition: border-color 0.22s, color 0.22s, transform 0.22s var(--ease-spring); }
+  .btn-outline:hover { border-color: var(--accent); color: var(--accent); transform: translateY(-2px); }
+
+  /* FLASHCARDS */
+  .hero-visual { display: flex; justify-content: center; align-items: center; opacity: 0; transform: translateX(32px) scale(0.96); animation: slideLeft 0.7s 0.4s var(--ease-out) forwards; }
+  @keyframes slideLeft { to { opacity: 1; transform: translateX(0) scale(1); } }
+
+  .flashcard-stack { position: relative; width: 340px; height: 460px; }
+  .flashcard { position: absolute; inset: 0; border-radius: 22px; overflow: hidden; box-shadow: 0 20px 60px rgba(79,70,229,0.13), 0 4px 16px rgba(0,0,0,0.06); background: var(--card-bg); border: 1px solid var(--border); transition: opacity 0.55s var(--ease), transform 0.55s var(--ease); opacity: 0; transform: translateY(18px) scale(0.95); pointer-events: none; }
+  .flashcard.active { opacity: 1; transform: translateY(0) scale(1); pointer-events: auto; }
+  .flashcard.exit { opacity: 0; transform: translateY(-18px) scale(1.02); }
+
+  .fc-image { width: 100%; height: 190px; object-fit: cover; display: block; }
+  .fc-body { padding: 20px 22px 18px; }
+  .fc-tag { display: inline-block; padding: 4px 10px; border-radius: 20px; font-family: 'Syne', sans-serif; font-size: 0.62rem; font-weight: 700; letter-spacing: 0.08em; text-transform: uppercase; margin-bottom: 9px; }
+  .fc-title { font-family: 'DM Serif Display', serif; font-size: 1.35rem; margin-bottom: 6px; letter-spacing: -0.02em; }
+  .fc-desc { font-size: 0.8rem; color: var(--ink-soft); line-height: 1.5; margin-bottom: 14px; }
+  .fc-stats { display: flex; gap: 1.2rem; }
+  .fc-stat { display: flex; flex-direction: column; gap: 2px; }
+  .fc-stat-num { font-family: 'DM Serif Display', serif; font-size: 1.25rem; }
+  .fc-stat-label { font-family: 'Syne', sans-serif; font-size: 0.58rem; font-weight: 700; letter-spacing: 0.08em; text-transform: uppercase; color: var(--ink-soft); }
+
+  .flashcard-dots { position: absolute; bottom: -30px; left: 50%; transform: translateX(-50%); display: flex; gap: 6px; }
+  .flashcard-dot { width: 6px; height: 6px; border-radius: 50%; background: var(--border); cursor: pointer; transition: background 0.3s, transform 0.3s var(--ease-spring); }
+
+  .fc-uni .fc-tag { background: var(--proj-uni-bg); color: var(--proj-uni); }
+  .fc-uni .fc-stat-num { color: var(--proj-uni); }
+  .fc-afri .fc-tag { background: var(--proj-afri-bg); color: var(--proj-afri); }
+  .fc-afri .fc-stat-num { color: var(--proj-afri); }
+  .fc-maw .fc-tag { background: var(--proj-maw-bg); color: var(--proj-maw); }
+  .fc-maw .fc-stat-num { color: var(--proj-maw); }
+  .fc-health .fc-tag { background: var(--proj-health-bg); color: var(--proj-health); }
+  .fc-health .fc-stat-num { color: var(--proj-health); }
+
+  .hero-scroll { position: absolute; bottom: 2rem; left: 50%; transform: translateX(-50%); display: flex; flex-direction: column; align-items: center; gap: 8px; opacity: 0; animation: fadeIn 0.5s 1.3s forwards; z-index: 1; }
+  @keyframes fadeIn { to { opacity: 1; } }
+  .scroll-text { font-family: 'Syne', sans-serif; font-size: 0.62rem; letter-spacing: 0.16em; text-transform: uppercase; color: var(--ink-soft); }
+  .scroll-line { width: 1px; height: 40px; background: linear-gradient(to bottom, var(--accent), transparent); animation: scrollGrow 1.5s ease-in-out infinite; transform-origin: top; }
+  @keyframes scrollGrow { 0% { transform: scaleY(0); opacity:1; } 60% { transform: scaleY(1); opacity:1; } 100% { transform: scaleY(1); opacity:0; } }
+
+  /* PROJECTS */
+  #projects { background: var(--bg); }
+  .projects-grid { display: grid; grid-template-columns: repeat(2, 1fr); gap: 1.5rem; }
+  .project-card { background: var(--card-bg); border-radius: 20px; border: 1px solid var(--border); overflow: hidden; cursor: pointer; text-decoration: none; color: inherit; transition: transform 0.3s var(--ease), box-shadow 0.3s; display: block; }
+  .project-card:hover { transform: translateY(-6px); box-shadow: 0 24px 60px rgba(79,70,229,0.1); }
+  .project-card.large { grid-column: span 2; display: grid; grid-template-columns: 1fr 1fr; }
+  .project-img { overflow: hidden; position: relative; aspect-ratio: 16/9; }
+  .project-card.large .project-img { aspect-ratio: unset; min-height: 300px; }
+  .project-img img { width: 100%; height: 100%; object-fit: cover; display: block; transition: transform 0.45s var(--ease), filter 0.45s; }
+  .project-card:hover .project-img img { transform: scale(1.06); filter: brightness(0.9); }
+  .project-img::after { content: ''; position: absolute; inset: 0; opacity: 0.1; transition: opacity 0.3s; }
+  .project-card:hover .project-img::after { opacity: 0.2; }
+  .proj-unidash .project-img::after { background: var(--proj-uni); }
+  .proj-afrihustle .project-img::after { background: var(--proj-afri); }
+  .proj-mawingu .project-img::after { background: var(--proj-maw); }
+  .proj-health .project-img::after { background: var(--proj-health); }
+  .project-body { padding: 28px; }
+  .project-card.large .project-body { padding: 44px; display: flex; flex-direction: column; justify-content: center; }
+  .project-tag { font-family: 'Syne', sans-serif; font-size: 0.67rem; font-weight: 700; letter-spacing: 0.1em; text-transform: uppercase; padding: 4px 10px; border-radius: 20px; display: inline-block; margin-bottom: 12px; }
+  .tag-uni { background: var(--proj-uni-bg); color: var(--proj-uni); }
+  .tag-afri { background: var(--proj-afri-bg); color: var(--proj-afri); }
+  .tag-maw { background: var(--proj-maw-bg); color: var(--proj-maw); }
+  .tag-health { background: var(--proj-health-bg); color: var(--proj-health); }
+  .project-card h3 { font-family: 'DM Serif Display', serif; font-size: clamp(1.2rem, 2.2vw, 1.7rem); line-height: 1.2; letter-spacing: -0.02em; margin-bottom: 10px; }
+  .project-card p { font-size: 0.875rem; color: var(--ink-soft); line-height: 1.65; margin-bottom: 20px; }
+  .project-arrow { font-family: 'Syne', sans-serif; font-size: 0.72rem; font-weight: 700; letter-spacing: 0.06em; text-transform: uppercase; display: flex; align-items: center; gap: 6px; transition: gap 0.2s; }
+  .project-card:hover .project-arrow { gap: 10px; }
+  .proj-unidash .project-arrow { color: var(--proj-uni); }
+  .proj-afrihustle .project-arrow { color: var(--proj-afri); }
+  .proj-mawingu .project-arrow { color: var(--proj-maw); }
+  .proj-health .project-arrow { color: var(--proj-health); }
+
+  /* ABOUT */
+  #about { background: #0F0F0F; color: #F9F9F9; }
+  #about .section-label { color: var(--accent-2); }
+  #about .section-label::before { background: var(--accent-2); }
+  #about h2.section-title { color: #F9F9F9; }
+  .about-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 5rem; align-items: start; }
+  .about-bio { font-size: 1rem; line-height: 1.8; color: rgba(249,249,249,0.72); }
+  .about-bio p { margin-bottom: 1.2rem; }
+  .about-bio strong { color: #F9F9F9; font-weight: 500; }
+  .philosophy-cards { display: flex; flex-direction: column; gap: 1rem; }
+  .phil-card { background: rgba(255,255,255,0.04); border-radius: 16px; padding: 22px; border: 1px solid rgba(255,255,255,0.07); transition: background 0.25s, transform 0.25s var(--ease), border-color 0.25s; }
+  .phil-card:hover { background: rgba(79,70,229,0.1); border-color: rgba(79,70,229,0.25); transform: translateX(6px); }
+  .phil-card h4 { font-family: 'DM Serif Display', serif; font-size: 1.1rem; margin-bottom: 5px; color: #F9F9F9; }
+  .phil-card p { font-size: 0.845rem; color: rgba(249,249,249,0.5); line-height: 1.6; }
+  .skills-section { margin-top: 2.5rem; }
+  .skills-title { font-family: 'Syne', sans-serif; font-size: 0.67rem; font-weight: 700; letter-spacing: 0.12em; text-transform: uppercase; color: rgba(249,249,249,0.38); margin-bottom: 1rem; }
+  .skills-tags { display: flex; flex-wrap: wrap; gap: 0.5rem; }
+  .skill-tag { font-family: 'Syne', sans-serif; font-size: 0.72rem; font-weight: 600; letter-spacing: 0.04em; padding: 7px 14px; border-radius: 50px; border: 1px solid rgba(255,255,255,0.12); color: rgba(249,249,249,0.7); cursor: default; transition: all 0.2s; opacity: 0; transform: scale(0.85); }
+  .skill-tag.visible { opacity: 1; transform: scale(1); }
+  .skill-tag:hover { background: linear-gradient(135deg, var(--accent), var(--accent-2)); border-color: transparent; color: white; transform: scale(1.06); }
+
+  /* PROGRESS BAR */
+  .progress-bar { position: fixed; top: var(--nav-h); left: 0; right: 0; height: 3px; z-index: 99; }
+  .progress-fill { height: 100%; background: linear-gradient(90deg, var(--accent), var(--accent-2), var(--accent-pink)); width: 0%; transition: width 0.1s linear; }
+
+  /* CASE STUDIES */
+  #case-studies { background: var(--bg); }
+  .case-tabs { display: flex; gap: 0.5rem; margin-bottom: 3rem; flex-wrap: wrap; }
+  .case-tab { font-family: 'Syne', sans-serif; font-size: 0.75rem; font-weight: 700; letter-spacing: 0.06em; text-transform: uppercase; padding: 10px 20px; border-radius: 50px; border: 1.5px solid var(--border); background: transparent; cursor: pointer; color: var(--ink-soft); transition: all 0.2s; }
+  .case-tab.active, .case-tab:hover { background: var(--ink); color: #fff; border-color: var(--ink); }
+  .case-study { display: none; }
+  .case-study.active { display: block; }
+  .case-overview { display: grid; grid-template-columns: 2fr 1fr; gap: 3rem; margin-bottom: 2rem; background: var(--card-bg); border-radius: 24px; padding: 48px; border: 1px solid var(--border); }
+  .case-overview h3 { font-family: 'DM Serif Display', serif; font-size: 2rem; letter-spacing: -0.02em; margin-bottom: 1rem; }
+  .case-overview p { font-size: 0.92rem; color: var(--ink-soft); line-height: 1.75; }
+  .case-meta { display: flex; flex-direction: column; gap: 1.4rem; }
+  .case-meta-label { font-family: 'Syne', sans-serif; font-size: 0.63rem; font-weight: 700; letter-spacing: 0.1em; text-transform: uppercase; color: var(--ink-soft); margin-bottom: 3px; }
+  .case-meta-value { font-size: 0.87rem; color: var(--ink); font-weight: 500; }
+  .case-sections { display: grid; grid-template-columns: repeat(3, 1fr); gap: 1.2rem; }
+  .case-section-card { background: var(--card-bg); border-radius: 18px; padding: 26px; border: 1px solid var(--border); }
+  .case-section-card h4 { font-family: 'Syne', sans-serif; font-size: 0.67rem; font-weight: 700; letter-spacing: 0.1em; text-transform: uppercase; margin-bottom: 10px; }
+  .cs-uni h4 { color: var(--proj-uni); }
+  .cs-afri h4 { color: var(--proj-afri); }
+  .cs-maw h4 { color: var(--proj-maw); }
+  .cs-health h4 { color: var(--proj-health); }
+  .case-section-card p { font-size: 0.845rem; color: var(--ink-soft); line-height: 1.65; }
+  .case-outcome { border-radius: 24px; padding: 48px; margin-top: 1.5rem; display: grid; grid-template-columns: repeat(3, 1fr); gap: 2rem; background: linear-gradient(135deg, #0F0F0F 0%, #1A1A2E 100%); }
+  .outcome-stat { text-align: center; }
+  .outcome-stat .num { font-family: 'DM Serif Display', serif; font-size: 3rem; letter-spacing: -0.03em; display: block; color: #F9F9F9; }
+  .outcome-stat p { font-size: 0.72rem; color: rgba(249,249,249,0.42); font-family: 'Syne', sans-serif; text-transform: uppercase; letter-spacing: 0.08em; margin-top: 4px; }
+  .uni-num { color: var(--proj-uni) !important; }
+  .afri-num { color: var(--proj-afri) !important; }
+  .maw-num { color: var(--proj-maw) !important; }
+  .health-num { color: var(--proj-health) !important; }
+
+  /* TIMELINE */
+  #experience { background: var(--bg-white); }
+  .timeline { position: relative; max-width: 720px; }
+  .timeline::before { content: ''; position: absolute; left: 11px; top: 12px; width: 1.5px; background: var(--border); height: 0; transition: height 0.9s var(--ease-out); }
+  .timeline.visible::before { height: calc(100% - 12px); }
+  .timeline-item { display: flex; gap: 2rem; margin-bottom: 3rem; opacity: 0; transform: translateX(-16px); transition: opacity 0.45s var(--ease-out), transform 0.45s; }
+  .timeline-item.visible { opacity: 1; transform: translateX(0); }
+  .timeline-dot-wrap { display: flex; flex-direction: column; align-items: center; flex-shrink: 0; }
+  .timeline-dot { width: 24px; height: 24px; border-radius: 50%; border: 2.5px solid var(--border); background: var(--bg-white); display: flex; align-items: center; justify-content: center; transition: background 0.3s, border-color 0.3s, transform 0.3s var(--ease-spring); flex-shrink: 0; }
+  .timeline-dot.active { background: linear-gradient(135deg, var(--accent), var(--accent-2)); border-color: var(--accent); transform: scale(1.2); }
+  .timeline-dot-inner { width: 8px; height: 8px; border-radius: 50%; background: white; }
+  .timeline-date { font-family: 'Syne', sans-serif; font-size: 0.65rem; font-weight: 700; letter-spacing: 0.1em; text-transform: uppercase; color: var(--ink-soft); margin-bottom: 5px; }
+  .timeline-role { font-family: 'DM Serif Display', serif; font-size: 1.2rem; margin-bottom: 3px; }
+  .timeline-org { font-size: 0.82rem; color: var(--accent); font-weight: 500; margin-bottom: 8px; }
+  .timeline-desc { font-size: 0.845rem; color: var(--ink-soft); line-height: 1.65; }
+
+  /* RESUME */
+  #resume { background: var(--bg); }
+  .resume-container { display: grid; grid-template-columns: 1fr 1fr; gap: 4rem; align-items: center; margin-top: 3rem; }
+  .resume-card { background: var(--card-bg); border-radius: 24px; padding: 40px; border: 1px solid var(--border); box-shadow: 0 12px 40px rgba(79,70,229,0.06); transition: transform 0.35s var(--ease), box-shadow 0.35s; }
+  .resume-card:hover { transform: scale(1.02) translateY(-4px); box-shadow: 0 24px 60px rgba(79,70,229,0.12); }
+  .resume-preview-header { display: flex; align-items: center; gap: 1rem; margin-bottom: 1.5rem; padding-bottom: 1.5rem; border-bottom: 1px solid var(--border); }
+  .resume-avatar { width: 56px; height: 56px; border-radius: 50%; background: linear-gradient(135deg, var(--proj-uni-bg), var(--proj-afri-bg)); border: 2px solid var(--border); display: flex; align-items: center; justify-content: center; font-family: 'DM Serif Display', serif; font-size: 1.4rem; flex-shrink: 0; color: var(--accent); }
+  .resume-preview-name { font-family: 'DM Serif Display', serif; font-size: 1.15rem; margin-bottom: 2px; }
+  .resume-preview-title { font-size: 0.78rem; color: var(--ink-soft); }
+  .resume-section-mini { margin-bottom: 1.5rem; }
+  .rsm-label { font-family: 'Syne', sans-serif; font-size: 0.62rem; font-weight: 700; letter-spacing: 0.1em; text-transform: uppercase; color: var(--accent); margin-bottom: 8px; }
+  .rsm-bar { height: 4px; border-radius: 2px; background: var(--border); margin-bottom: 6px; }
+  .rsm-bar.filled { background: linear-gradient(90deg, var(--accent), var(--accent-2)); }
+  .mini-chip { display: inline-block; padding: 3px 9px; border-radius: 20px; font-size: 0.6rem; font-family: 'Syne', sans-serif; font-weight: 700; text-transform: uppercase; letter-spacing: 0.07em; margin: 2px; }
+  .chip-uni { background: var(--proj-uni-bg); color: var(--proj-uni); }
+  .chip-afri { background: var(--proj-afri-bg); color: var(--proj-afri); }
+  .chip-maw { background: var(--proj-maw-bg); color: var(--proj-maw); }
+  .chip-health { background: var(--proj-health-bg); color: var(--proj-health); }
+  .resume-actions h3 { font-family: 'DM Serif Display', serif; font-size: 1.8rem; margin-bottom: 0.6rem; }
+  .resume-actions p { font-size: 0.9rem; color: var(--ink-soft); line-height: 1.7; margin-bottom: 1.8rem; }
+  .resume-btns { display: flex; gap: 0.75rem; flex-wrap: wrap; }
+
+  /* CONTACT */
+  #contact { background: #0F0F0F; color: #F9F9F9; }
+  #contact .section-label { color: var(--accent-2); }
+  #contact .section-label::before { background: var(--accent-2); }
+  #contact h2.section-title { color: #F9F9F9; }
+  .contact-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 5rem; margin-top: 3rem; }
+  .contact-tagline { font-family: 'DM Serif Display', serif; font-style: italic; font-size: 1.3rem; color: rgba(249,249,249,0.52); margin-bottom: 2.5rem; line-height: 1.5; }
+  .contact-links { display: flex; flex-direction: column; }
+  .contact-link { display: flex; align-items: center; gap: 1rem; color: rgba(249,249,249,0.62); text-decoration: none; font-size: 0.9rem; padding: 16px 0; border-bottom: 1px solid rgba(255,255,255,0.07); transition: color 0.2s, gap 0.2s; }
+  .contact-link:hover { color: #F9F9F9; gap: 1.3rem; }
+  .contact-link-icon { width: 36px; height: 36px; border-radius: 10px; background: rgba(255,255,255,0.07); display: flex; align-items: center; justify-content: center; font-size: 0.9rem; flex-shrink: 0; transition: background 0.2s; }
+  .contact-link:hover .contact-link-icon { background: linear-gradient(135deg, var(--accent), var(--accent-2)); }
+  .contact-form { display: flex; flex-direction: column; gap: 1.2rem; }
+  .form-group { display: flex; flex-direction: column; gap: 6px; }
+  .form-label { font-family: 'Syne', sans-serif; font-size: 0.67rem; font-weight: 700; letter-spacing: 0.1em; text-transform: uppercase; color: rgba(249,249,249,0.38); }
+  .form-input, .form-textarea { background: rgba(255,255,255,0.06); border: 1.5px solid rgba(255,255,255,0.1); border-radius: 12px; padding: 14px 18px; font-family: 'DM Sans', sans-serif; font-size: 0.9rem; color: #F9F9F9; outline: none; width: 100%; transition: border-color 0.2s, background 0.2s; }
+  .form-input::placeholder, .form-textarea::placeholder { color: rgba(249,249,249,0.27); }
+  .form-input:focus, .form-textarea:focus { border-color: var(--accent); background: rgba(79,70,229,0.08); }
+  .form-textarea { resize: vertical; min-height: 120px; }
+  .btn-submit { font-family: 'Syne', sans-serif; font-size: 0.82rem; font-weight: 700; letter-spacing: 0.06em; text-transform: uppercase; background: linear-gradient(135deg, var(--accent), var(--accent-2)); color: white; border: none; border-radius: 50px; padding: 16px 32px; cursor: pointer; transition: opacity 0.2s, transform 0.2s var(--ease-spring), box-shadow 0.2s; align-self: flex-start; margin-top: 0.5rem; }
+  .btn-submit:hover { opacity: 0.87; transform: translateY(-2px); box-shadow: 0 8px 24px rgba(79,70,229,0.35); }
+  .btn-submit:active { transform: scale(0.97) translateY(0); }
+
+  /* FOOTER */
+  footer { background: #080808; padding: 36px 5vw; display: flex; align-items: center; justify-content: space-between; flex-wrap: wrap; gap: 1rem; }
+  .footer-copy { font-size: 0.78rem; color: rgba(255,255,255,0.25); font-family: 'Syne', sans-serif; letter-spacing: 0.04em; }
+  .footer-links { display: flex; gap: 1.5rem; }
+  .footer-links a { font-size: 0.76rem; color: rgba(255,255,255,0.25); text-decoration: none; transition: color 0.2s; }
+  .footer-links a:hover { color: var(--accent-2); }
+
+  /* CURSOR */
+  .cursor { position: fixed; width: 10px; height: 10px; border-radius: 50%; background: var(--accent); pointer-events: none; z-index: 9999; transform: translate(-50%,-50%); transition: width 0.3s, height 0.3s; }
+  .cursor-ring { position: fixed; width: 36px; height: 36px; border-radius: 50%; border: 1.5px solid rgba(79,70,229,0.35); pointer-events: none; z-index: 9998; transform: translate(-50%,-50%); transition: width 0.35s, height 0.35s; }
+
+  /* RESPONSIVE */
+  @media (max-width: 900px) {
+    .hero-grid, .about-grid, .contact-grid, .resume-container { grid-template-columns: 1fr; gap: 2.5rem; }
+    .hero-visual { display: none; }
+    .projects-grid { grid-template-columns: 1fr; }
+    .project-card.large { grid-column: span 1; display: block; }
+    .case-overview { grid-template-columns: 1fr; }
+    .case-sections { grid-template-columns: 1fr; }
+    .case-outcome { grid-template-columns: 1fr; }
+    .nav-links { display: none; }
+  }
+</style>
+</head>
+<body>
+
+<div class="cursor" id="cursor"></div>
+<div class="cursor-ring" id="cursorRing"></div>
+<div class="progress-bar"><div class="progress-fill" id="progressFill"></div></div>
+
+<!-- NAV -->
+<nav id="nav">
+  <a href="#home" class="nav-logo">B<span>.</span>Wachira</a>
+  <ul class="nav-links">
+    <li><a href="#projects">Work</a></li>
+    <li><a href="#about">About</a></li>
+    <li><a href="#case-studies">Case Studies</a></li>
+    <li><a href="#experience">Experience</a></li>
+    <li><a href="#resume">Resume</a></li>
+  </ul>
+  <a href="#contact" class="btn-nav">Let's Talk</a>
+</nav>
+
+<!-- HERO -->
+<section id="home">
+  <div class="hero-bg">
+    <div class="blob blob-1"></div>
+    <div class="blob blob-2"></div>
+    <div class="blob blob-3"></div>
+  </div>
+  <div class="hero-grid">
+    <div>
+      <div class="hero-eyebrow">✦ Product Designer &amp; UX Strategist</div>
+      <h1 class="hero-name">Designing with<br><em>purpose</em> &amp;<br>precision.</h1>
+      <p class="hero-subtitle">Hi, I'm <strong>Bridget Wanjiru Wachira</strong> a product designer crafting human-centred experiences at the intersection of systems thinking, motion, and empathy-driven research.</p>
+      <div class="hero-ctas">
+        <a href="#projects" class="btn-primary">View My Work →</a>
+        <a href="#contact" class="btn-outline">Get In Touch</a>
+      </div>
+    </div>
+
+    <!-- FLASHCARD STACK -->
+    <div class="hero-visual">
+      <div class="flashcard-stack">
+
+        <div class="flashcard fc-uni active" id="fc-0">
+          <img class="fc-image" src="https://images.unsplash.com/photo-1551288049-bebda4e38f71?w=680&q=80&auto=format&fit=crop" alt="UniDash analytics dashboard">
+          <div class="fc-body">
+            <span class="fc-tag">EdTech · UX Design</span>
+            <div class="fc-title">UniDash</div>
+            <div class="fc-desc">Unified academic dashboard tairoled to help university students in Kenya manage their academic journey while keeping up with their technical skills.</div>
+            <div class="fc-stats">
+              <div class="fc-stat"><span class="fc-stat-num">40%</span><span class="fc-stat-label">Reduced Academic Stress</span></div>
+              <div class="fc-stat"><span class="fc-stat-num">60%</span><span class="fc-stat-label">Impact of the problem</span></div>
+              <div class="fc-stat"><span class="fc-stat-num">70%</span><span class="fc-stat-label">Time Management</span></div>
+            </div>
+          </div>
+        </div>
+
+        <div class="flashcard fc-afri" id="fc-1">
+          <img class="fc-image" src="https://images.unsplash.com/photo-1607703703674-df96af81dffa?w=680&q=80&auto=format&fit=crop" alt="AfriHustle mobile app">
+          <div class="fc-body">
+            <span class="fc-tag">FinTech · Mobile</span>
+            <div class="fc-title">AfriHustle</div>
+            <div class="fc-desc">Gig economy platform empowering workers with required skills and opportunities.</div>
+            <div class="fc-stats">
+              <div class="fc-stat"><span class="fc-stat-num">70.9 million</span><span class="fc-stat-label">young Africans were not in employment, education, or training in 2025.</span></div>
+              <div class="fc-stat"><span class="fc-stat-num">9%</span><span class="fc-stat-label">of African youth have completed technical or vocational training limiting access to job-ready skills</span></div>
+              <div class="fc-stat"><span class="fc-stat-num">32%</span><span class="fc-stat-label">Improvement in employment rates when training was aligned with industry needs</span></div>
+            </div>
+          </div>
+        </div>
+
+        <div class="flashcard fc-maw" id="fc-2">
+          <img class="fc-image" src="https://images.unsplash.com/photo-1558494949-ef010cbdcc31?w=680&q=80&auto=format&fit=crop" alt="MawinguOps network monitoring">
+          <div class="fc-body">
+            <span class="fc-tag">SaaS · B2B · OpsDesign</span>
+            <div class="fc-title">MawinguOps</div>
+            <div class="fc-desc">MawinguOps is a cloud-based advisory system that analyzes weather data and converts it into simple planting recommendations for smallholder maize farmers. It delivers these advisories through USSD and SMS, allowing farmers with basic mobile phones to receive timely guidance on when to plant</div>
+            <div class="fc-stats">
+              <div class="fc-stat"><span class="fc-stat-num">19%</span><span class="fc-stat-label"> decline in Kenya’s maize production recorded between 2020 and 2022.</span></div>
+              <div class="fc-stat"><span class="fc-stat-num">80%</span><span class="fc-stat-label">of smallholder farmers in semi-arid regions experience crop losses.</span></div>
+              <div class="fc-stat"><span class="fc-stat-num">27%</span><span class="fc-stat-label">yield improvement if solution is implemented</span></div>
+            </div>
+          </div>
+        </div>
+
+        <div class="flashcard fc-health" id="fc-3">
+          <img class="fc-image" src="https://images.unsplash.com/photo-1576091160550-2173dba999ef?w=680&q=80&auto=format&fit=crop" alt="Healthcare research">
+          <div class="fc-body">
+            <span class="fc-tag">Research · Healthcare</span>
+            <div class="fc-title">Healthcare Stress</div>
+            <div class="fc-desc">This study explores post-shift stress among medical workers, its causes, impacts, and explores the potential role of technology in monitoring, managing, and mitigating this stress.</div>
+            <div class="fc-stats">
+              <div class="fc-stat"><span class="fc-stat-num">65-75%</span><span class="fc-stat-label">of nurses and doctors report moderate to high stress levels immediately after night shifts.</span></div>
+              <div class="fc-stat"><span class="fc-stat-num">40%</span><span class="fc-stat-label">of staff working 12-hour shifts report higher fatigue scores than those on standard 8-hour shifts.</span></div>
+              <div class="fc-stat"><span class="fc-stat-num">30%-40%</span><span class="fc-stat-label">of staff consistently use stress-tracking apps, citing usability and integration issues.</span></div>
+            </div>
+          </div>
+        </div>
+
+        <div class="flashcard-dots" id="flashcardDots">
+          <div class="flashcard-dot" data-i="0"></div>
+          <div class="flashcard-dot" data-i="1"></div>
+          <div class="flashcard-dot" data-i="2"></div>
+          <div class="flashcard-dot" data-i="3"></div>
+        </div>
+      </div>
+    </div>
+  </div>
+  <div class="hero-scroll">
+    <span class="scroll-text">Scroll</span>
+    <div class="scroll-line"></div>
+  </div>
+</section>
+
+<!-- PROJECTS -->
+<section id="projects">
+  <div class="section-label">Selected Work</div>
+  <h2 class="section-title reveal">Projects that<br>move people.</h2>
+  <p class="section-sub reveal reveal-delay-1">Four products. Four challenges. One constant design rooted in real human needs.</p>
+  <div class="projects-grid">
+
+    <a href="#case-studies" class="project-card large proj-unidash reveal" onclick="openCase('unidash'); return false;">
+      <div class="project-img">
+        <img src="https://images.unsplash.com/photo-1551288049-bebda4e38f71?w=1000&q=80&auto=format&fit=crop" alt="UniDash university dashboard analytics">
+      </div>
+      <div class="project-body">
+        <span class="project-tag tag-uni">EdTech · UX Design · Systems</span>
+        <h3>UniDash</h3>
+        <p>A unified academic management dashboard for Kenyan university students,consolidating timetables, internships, projects and bootcamps into one coherent system to help university students navigate their academic journey while still keeping up with their technical skills.</p>
+        <div class="project-arrow">View Case Study <span>→</span></div>
+      </div>
+    </a>
+
+    <a href="#case-studies" class="project-card proj-afrihustle reveal reveal-delay-1" onclick="openCase('afrihustle'); return false;">
+      <div class="project-img">
+        <img src="https://images.unsplash.com/photo-1607703703674-df96af81dffa?w=720&q=80&auto=format&fit=crop" alt="AfriHustle gig economy mobile platform">
+      </div>
+      <div class="project-body">
+        <span class="project-tag tag-afri">FinTech · Mobile · Africa</span>
+        <h3>AfriHustle</h3>
+        <p>A gig economy platform empowering workers with required skills and opportunity matching.</p>
+        <div class="project-arrow">View Case Study <span>→</span></div>
+      </div>
+    </a>
+
+    <a href="#case-studies" class="project-card proj-mawingu reveal reveal-delay-2" onclick="openCase('mawingu'); return false;">
+      <div class="project-img">
+        <img src="https://images.unsplash.com/photo-1558494949-ef010cbdcc31?w=720&q=80&auto=format&fit=crop" alt="MawinguOps network operations monitoring">
+      </div>
+      <div class="project-body">
+        <span class="project-tag tag-maw">SaaS · OpsDesign · B2B</span>
+        <h3>MawinguOps</h3>
+        <p>MawinguOps is a cloud-based advisory system that analyzes weather data and converts it into simple planting recommendations for smallholder maize farmers. It delivers these advisories through USSD and SMS, allowing farmers with basic mobile phones to receive timely guidance on when to plant</p>
+        <div class="project-arrow">View Case Study <span>→</span></div>
+      </div>
+    </a>
+
+    <a href="#case-studies" class="project-card proj-health reveal reveal-delay-3" onclick="openCase('health'); return false;">
+      <div class="project-img">
+        <img src="https://images.unsplash.com/photo-1576091160550-2173dba999ef?w=720&q=80&auto=format&fit=crop" alt="Healthcare stress research hospital">
+      </div>
+      <div class="project-body">
+        <span class="project-tag tag-health">Research · Healthcare · Wellbeing</span>
+        <h3>Healthcare Stress Research</h3>
+        <p>This study explores post-shift stress among medical workers and investigates how technology-based interventions like wearable devices and digital platforms can monitor, manage, and reduce its impact on health, recovery, and workplace performance.</p>
+        <div class="project-arrow">View Case Study <span>→</span></div>
+      </div>
+    </a>
+
+  </div>
+</section>
+
+<!-- ABOUT -->
+<section id="about">
+  <div class="section-label">About Me</div>
+  <div class="about-grid">
+    <div>
+      <h2 class="section-title reveal" style="color:#F9F9F9;">Bridget.<br>Builder of<br>better systems.</h2>
+      <div class="about-bio reveal reveal-delay-1">
+        <p>I'm a <strong>product designer and UX strategist</strong> based in Nairobi, Kenya, with a passion for designing systems that work beautifully, especially in emerging market contexts where constraints sharpen creativity.</p>
+        <p>My background spans <strong>interaction design, UX research, and design leadership</strong>. I've worked across EdTech, FinTech, HealthTech, and B2B SaaS, always anchoring decisions in qualitative research and real user behaviour.</p>
+        <p>When I'm not in Figma, you'll find me researching, writing about African UX, or obsessing over typography and motion systems.</p>
+      </div>
+      <div class="skills-section reveal reveal-delay-2">
+        <div class="skills-title">Core Skills</div>
+        <div class="skills-tags" id="skillTags">
+          <span class="skill-tag">UX Research</span><span class="skill-tag">Interaction Design</span><span class="skill-tag">Design Systems</span><span class="skill-tag">Figma</span><span class="skill-tag">Prototyping</span><span class="skill-tag">Information Architecture</span><span class="skill-tag">User Testing</span><span class="skill-tag">Service Design</span><span class="skill-tag">Motion Design</span><span class="skill-tag">Design Strategy</span><span class="skill-tag">Accessibility</span><span class="skill-tag">Design Leadership</span>
+        </div>
+      </div>
+    </div>
+    <div class="reveal reveal-delay-2">
+      <div class="skills-title" style="color:rgba(249,249,249,0.38); margin-bottom:1.2rem;">Design Philosophy</div>
+      <div class="philosophy-cards">
+        <div class="phil-card"><h4>Constraints are catalysts.</h4><p>The best design often emerges from real-world limitations: bandwidth, literacy levels, cultural context. I design for the edges, and the centre follows.</p></div>
+        <div class="phil-card"><h4>Research before rectangles.</h4><p>I won't open Figma before I've spoken to real users. Every pixel should trace back to a human insight, not an assumption.</p></div>
+        <div class="phil-card"><h4>Systems over screens.</h4><p>Great products are ecosystems, not interfaces. I think in flows, states, and design languages, not just single screens.</p></div>
+        <div class="phil-card"><h4>Motion has meaning.</h4><p>Animation isn't decoration. It's information, it tells you what happened, what will happen, and why something matters.</p></div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- CASE STUDIES -->
+<section id="case-studies">
+  <div class="section-label">Deep Dives</div>
+  <h2 class="section-title reveal">Case Studies</h2>
+  <p class="section-sub reveal reveal-delay-1">From problem framing to shipped solution, here's how I think through design challenges.</p>
+  <div class="case-tabs reveal reveal-delay-2">
+    <button class="case-tab active" onclick="openCase('unidash')">UniDash</button>
+    <button class="case-tab" onclick="openCase('afrihustle')">AfriHustle</button>
+    <button class="case-tab" onclick="openCase('mawingu')">MawinguOps</button>
+    <button class="case-tab" onclick="openCase('health')">Healthcare Research</button>
+  </div>
+
+  <div class="case-study active" id="cs-unidash">
+    <div class="case-overview"><div><h3>UniDash, Unified Student Dashboard</h3><p>Kenyan university students were navigating many apps for basic academic tasks. UniDash unified class timetables, projects, bootcamps, internships and daily personal tasks into a single accessible platform helping students meet their deadlines.</p></div><div class="case-meta"><div><div class="case-meta-label">Role</div><div class="case-meta-value">Lead Product Designer</div></div><div><div class="case-meta-label">Duration</div><div class="case-meta-value">4 months · 2026</div></div><div><div class="case-meta-label">Tools</div><div class="case-meta-value">Figma</div></div><div><div class="case-meta-label">Platform</div><div class="case-meta-value">Mobile (Android-first)</div></div></div></div>
+    <div class="case-sections">
+      <div class="case-section-card cs-uni reveal"><h4>Problem</h4><p>University students, especially those in technology programs, often struggle to manage their academic schedules, projects, internships, and personal study activities due to the increasing complexity of their workloads. Most existing task management tools are generic and do not accommodate the structured nature of university semesters, class timetables, and project-based learning. As a result, students rely on fragmented tools or manual planning methods, which leads to disorganization, missed deadlines, and inefficient time management. This creates a need for a specialized academic task management system that can organize and schedule student workloads in a structured and realistic manner.</p></div>
+      <div class="case-section-card cs-uni reveal reveal-delay-1"><h4>Research</h4><p>To understand the specific challenges faced by technology university students in managing academic workloads, a survey-based research study was conducted. The goal was to identify:
+
+Existing habits in task management
+
+Problems with current digital and manual planning tools
+
+Preferences for features in a student-focused task tracker
+
+How academic, project, and internship workloads affect time management</p></div>
+      <div class="case-section-card cs-uni reveal reveal-delay-2"><h4>Design Process</h4><p>5 rounds of low fidelity to high fidelity prototyping were done, this is to ensure that all the user requirements we meet and the proposed solution is within the reqired scope and budget.</p></div>
+      <div class="case-section-card cs-uni reveal"><h4>Solution</h4><p>UniDash, a structured academic task management system designed specifically for university students. The system will allow students to organize their academic schedules, including class timetables, projects, internships, exams, and personal study sessions, within a single platform. UniDash will use a rule-based scheduling engine to automatically break down complex tasks and allocate them into realistic time slots while respecting fixed commitments such as lectures and work hours. By providing a centralized and structured planning environment, the system aims to improve time management, reduce missed deadlines, and help students manage their academic workloads more effectively.</p></div>
+      <div class="case-section-card cs-uni reveal reveal-delay-1"><h4>Accessibility</h4><p>WCAG 2.1 AA compliance, high contrast mode, screen reader support. Designed for 2G networks with progressive loading and skeleton states.</p></div>
+      <div class="case-section-card cs-uni reveal reveal-delay-2"><h4>Impact</h4><p> under development</p></div>
+    </div>
+    <div class="case-outcome">
+      <div class="outcome-stat"><span class="num uni-num">40%</span><p>Reduced Academic Stress if solution is implemented.</p></div>
+      <div class="outcome-stat"><span class="num uni-num">60%</span><p>students admitted that they have missed or nearly missed academic deadlines due to poor task coordination or ineffective scheduling methods.</p></div>
+      <div class="outcome-stat"><span class="num uni-num">70%</span><p>Better Time Management</p></div>
+    </div>
+  </div>
+
+  <div class="case-study" id="cs-afrihustle">
+    <div class="case-overview"><div><h3>AfriHustle, Gig Economy Platform</h3><p>AfriHustle bridges this gap between employers and potential employees, while at the same time offering courses for users to upskill and also learn new skills, both technical and soft skills.</p></div><div class="case-meta"><div><div class="case-meta-label">Role</div><div class="case-meta-value">UX &amp; Design Strategist</div></div><div><div class="case-meta-label">Duration</div><div class="case-meta-value">6 months </div></div><div><div class="case-meta-label">Tools</div><div class="case-meta-value">Figma</div></div><div><div class="case-meta-label">Platform</div><div class="case-meta-value">Mobile(Android-first)</div></div></div></div>
+    <div class="case-sections">
+      <div class="case-section-card cs-afri reveal"><h4>Problem</h4><p>Many young people struggle to find employment because there is a disconnect between the skills they have and what employers need. This skills mismatch leaves millions unemployed or underemployed despite having completed education. Additionally, limited access to practical training and job-matching platforms makes it difficult for employers to find qualified talent. As a result, both job seekers and companies face inefficiencies in the hiring process.</p></div>
+      <div class="case-section-card cs-afri reveal reveal-delay-1"><h4>Research</h4><p>Studies also show that a large share of young workers report their education does not match job requirements, demonstrating a widespread skills mismatch between education and labor market demand.</p></div>
+      <div class="case-section-card cs-afri reveal reveal-delay-2"><h4>Solution</h4><p>AfriHustle bridges this gap between employers and potential employees, while at the same time offering courses for users to upskill and also learn new skills, both technical and soft skills.</p></div>
+    </div>
+    <div class="case-outcome">
+      <div class="outcome-stat"><span class="num afri-num">70.9 million</span><p>young Africans were not in employment, education, or training in 2025,</p></div>
+      <div class="outcome-stat"><span class="num afri-num">9%</span><p>of African youth have completed technical or vocational training</p></div>
+      <div class="outcome-stat"><span class="num afri-num">32%</span><p>Improvement in employment rates when training was aligned with industry needs</p></div>
+    </div>
+  </div>
+
+  <div class="case-study" id="cs-mawingu">
+    <div class="case-overview"><div><h3>MawinguOps, Farmers Advisory Dashboard</h3><p>Smallholder maize farmers in Kenya face frequent crop failures due to increasingly unpredictable weather patterns caused by climate change. Although weather forecasts exist, they are often too technical and generalized for farmers to translate into practical planting decisions. Most farmers rely on unreliable sources such as neighbors or radio broadcasts when deciding when to plant. This information gap leads to poor planting timing, reduced yields, and increased food insecurity.</p></div><div class="case-meta"><div><div class="case-meta-label">Role</div><div class="case-meta-value"> Operations Lead</div></div><div><div class="case-meta-label">Duration</div><div class="case-meta-value">5 months</div></div><div><div class="case-meta-label">Tools</div><div class="case-meta-value">Google Gemini AI, Google Cloud Run, Node.js, Express.js, Africa’s Talking API, SQLite, Weather APIs, AI model APIs</div></div><div><div class="case-meta-label">Platform</div><div class="case-meta-value">Web (Desktop-first)</div></div></div></div>
+    <div class="case-sections">
+      <div class="case-section-card cs-maw reveal"><h4>Problem</h4><p>1. Climate variability disrupting farming
+
+Weather patterns in Kenya have become unpredictable due to climate change.
+
+Traditional planting calendars that farmers relied on for generations no longer work.
+
+2. High crop failure among smallholder farmers
+
+Over 80% of smallholder farmers in semi-arid regions experience crop losses.
+
+Incorrect planting timing leads to reduced maize yields and food insecurity.
+
+3. Weather information is difficult to interpret
+
+Available forecasts are technical and complex (probabilities, pressure, rainfall mm).
+
+Farmers need simple planting decisions, not scientific weather reports.
+
+4. Poor delivery of agricultural advisory information
+
+Existing channels have major limitations:
+
+Government extension officers cannot reach thousands of farmers quickly.
+
+Digital advisory apps require smartphones and internet.
+
+Radio forecasts are general and unreliable at farm level.
+
+5. Accessibility barriers
+
+Most farmers:
+
+Use basic feature phones
+
+Have limited internet access
+
+Need solutions compatible with USSD or SMS.</p></div>
+      <div class="case-section-card cs-maw reveal reveal-delay-1"><h4>Design Decisions</h4><p>To address those problems, the team made several key system design decisions.1. Use simple mobile channels (USSD + SMS). Deliver advisories through USSD and SMS 2. Translate weather data into simple decisions. Use an AI advisory engine to convert weather forecasts into clear recommendations. 3. Use cloud-native serverless infrastructure. Deploy backend on serverless cloud infrastructure. 4. Provide hyper-local recommendations. Process location-specific weather forecasts. 5. Use a freemium business model. Basic advisory service remains free.Premium features available for advanced insights</p></div>
+      <div class="case-section-card cs-maw reveal reveal-delay-2"><h4>Outcome</h4><p>The solution aims to achieve several outcomes. 1. Improved planting decisions. 2. Increased maize yield. 3. Reduced crop failure. 4. Improved food security. 5. Economic impact</p></div>
+    </div>
+    <div class="case-outcome">
+      <div class="outcome-stat"><span class="num maw-num">19%</span><p>decline in Kenya’s maize production recorded between 2020 and 2022.</p></div>
+      <div class="outcome-stat"><span class="num maw-num">80%</span><p>of smallholder farmers in semi-arid regions experience crop losses.</p></div>
+      <div class="outcome-stat"><span class="num maw-num">27%</span><p>yield improvement if solution is implemented</p></div>
+    </div>
+  </div>
+
+  <div class="case-study" id="cs-health">
+    <div class="case-overview"><div><h3>Healthcare Stress, UX Research Study</h3><p> Healthcare professionals often experience high levels of stress after completing shifts due to long hours, night work, and exposure to trauma, which can impair recovery, sleep, and overall well-being. Despite the availability of technological tools like wearable health trackers and stress-monitoring apps, their use in managing post-shift stress remains underexplored. Traditional stress management strategies may not address real-time monitoring or personalized interventions, highlighting a critical gap in supporting healthcare workers’ post-shift recovery. This study seeks to investigate this issue and evaluate how technology can effectively reduce post-shift stress in clinical settings.</p></div><div class="case-meta"><div><div class="case-meta-label">Role</div><div class="case-meta-value">Lead UX Researcher</div></div><div><div class="case-meta-label">Duration</div><div class="case-meta-value">3 months</div></div><div><div class="case-meta-label">Methods</div><div class="case-meta-value">Interviews, Surveys, Diary Studies</div></div><div><div class="case-meta-label">Participants</div><div class="case-meta-value">nurses &amp; doctors, hospitals</div></div></div></div>
+    <div class="case-sections">
+      <div class="case-section-card cs-health reveal"><h4>Research Questions</h4><p>What is the nature and extent of post-shift stress experienced by medical workers across different healthcare settings? Which occupational and environmental factors most significantly contribute to post-shift stress among healthcare professionals? How does post-shift stress affect the physical, psychological, and professional well-being of medical workers? What technological tools (e.g., wearable devices, stress-monitoring applications, digital health platforms) are currently available to detect and manage post-shift stress? How feasible and acceptable is the integration of technology-based stress management solutions in healthcare work environments? What evidence-based recommendations can be made for implementing technological interventions to reduce post-shift stress and support recovery?</p></div>
+      <div class="case-section-card cs-health reveal reveal-delay-1"><h4>Key Findings</h4><p>Medical workers experience significant post-shift stress, manifested through fatigue, emotional exhaustion, and disrupted sleep, which negatively affects both their well-being and patient care. Factors such as long hours, night shifts, high patient acuity, and exposure to trauma were identified as major contributors. Technological tools like wearable devices and stress-monitoring apps show potential in tracking stress in real time, but adoption is limited due to usability, privacy, and workflow integration challenges.</p></div>
+      <div class="case-section-card cs-health reveal reveal-delay-2"><h4>Recommendations</h4><p>Healthcare institutions should implement technology-driven stress management solutions tailored to post-shift recovery, including wearable monitors and digital health platforms. Training and awareness programs can improve adoption and proper usage of these tools. Policies should address data privacy, usability, and integration with existing workflows to ensure sustainable support. Finally, evidence-based interventions should be incorporated into occupational health strategies to enhance staff resilience and improve patient care outcomes.</p></div>
+    </div>
+    <div class="case-outcome">
+      <div class="outcome-stat"><span class="num health-num">65–75%</span><p>of nurses and doctors report moderate to high stress levels immediately after night shifts</p></div>
+      <div class="outcome-stat"><span class="num health-num">40%</span><p>of staff working 12-hour shifts report higher fatigue scores than those on standard 8-hour shifts.</p></div>
+      <div class="outcome-stat"><span class="num health-num">30%-40%</span><p>of medical staff consistently use stress-tracking apps, citing usability and integration issues.</p></div>
+    </div>
+  </div>
+</section>
+
+<!-- EXPERIENCE -->
+<section id="experience">
+  <div class="section-label">Experience</div>
+  <h2 class="section-title reveal">Journey so far.</h2>
+  <p class="section-sub reveal reveal-delay-1">Leadership, design, and community, all part of the same story.</p>
+  <div class="timeline" id="timeline">
+    <div class="timeline-item"><div class="timeline-dot-wrap"><div class="timeline-dot"><div class="timeline-dot-inner"></div></div></div><div class="timeline-content"><div class="timeline-date">May 2025 –  August 2025</div><div class="timeline-role">Junior UI/UX Designer intern,</div><div class="timeline-org"> Anansi Technology, Nairobi</div><div class="timeline-desc">, I designed and documented user interfaces for a SACCO digitization platform serving real financial workflows using Figma, supporting core financial workflows and system states. Collaborated with a 6-member cross-functional team in an Agile setup, ensuring designs aligned with technical constraints and business needs. Conducted user research and translated insights into interface improvements that simplified transaction flows and reduced process complexity. Contributed to design documentation to support developer handoff and ensured designs addressed usability, clarity, and real-world user constraints. </div></div></div>
+    <div class="timeline-item"><div class="timeline-dot-wrap"><div class="timeline-dot"><div class="timeline-dot-inner"></div></div></div><div class="timeline-content"><div class="timeline-date">January 2025  –  April 2025</div><div class="timeline-role">Product Design Mentee</div><div class="timeline-org">Africa Agility Foundation</div><div class="timeline-desc">Selected among 100+ students for a 4-month product design training program, and at the end of the program, collaborated with cross-functional teams (design, product, and development) to deliver a final digital product connecting employees to potential employers while supporting skill development and career growth. Contributed to user research, market research, user journeys, wireframes, and high-fidelity prototypes, applying core UX/UI design principles to interpret user needs and solve real-world problems. Strengthened skills in problem-solving, stakeholder collaboration, and design documentation through iterative feedback and validation cycles.  </div></div></div>
+    <div class="timeline-item"><div class="timeline-dot-wrap"><div class="timeline-dot"><div class="timeline-dot-inner"></div></div></div><div class="timeline-content"><div class="timeline-date">March 2025 –  November 2025</div><div class="timeline-role">Cloud Track Mentee</div><div class="timeline-org">Kamilimu Limited</div><div class="timeline-desc"> Selected among 40 students for an 8-month mentorship program focused on cloud engineering and professional development. Gained hands-on exposure to AWS, Docker, Kubernetes, and Terraform, and applied this knowledge in a 3-member team to develop an innovation delivering real-time climate advisories for maize farmers in Machakos County. The solution supported data-driven decision-making in agriculture and was recognized as a runner-up in the program’s innovation challenge, demonstrating strong collaboration, problem-solving, and systems thinking skills. </div></div></div>
+    <div class="timeline-item"><div class="timeline-dot-wrap"><div class="timeline-dot"><div class="timeline-dot-inner"></div></div></div><div class="timeline-content"><div class="timeline-date">September 2025 –  December 2025 </div><div class="timeline-role">Game programming mentee</div><div class="timeline-org">Game-Up Africa:</div><div class="timeline-desc"></div> Chosen among 100+ applicants for a 4-month GameUp Africa mentorship program focused on game development and professional skills. Chosen as a Clan Lead, leading a 3-member team to collaborate on game concepts, mechanics, and storytelling. Facilitated idea-sharing, feedback sessions, and coordination, strengthening skills in leadership, collaboration, creative problem-solving, and user-centered storytelling, with a focus on representing African narratives through interactive experiences. </div></div>
+    <div class="timeline-item"><div class="timeline-dot-wrap"><div class="timeline-dot"><div class="timeline-dot-inner"></div></div></div><div class="timeline-content"><div class="timeline-date">September 2024 – December 2024 </div><div class="timeline-role">Web Development Trainee:</div><div class="timeline-org">Emobilis</div><div class="timeline-desc"> Elected for a 4-month web development bootcamp, where I applied analytical and critical thinking to design and build a functional web application using HTML, CSS, JavaScript, and Django. Gained hands-on experience translating requirements into working features, understanding front-end and back-end workflows, and collaborating on project-based development. </div></div></div>
+    <div class="timeline-item"><div class="timeline-dot-wrap"><div class="timeline-dot"><div class="timeline-dot-inner"></div></div></div><div class="timeline-content"><div class="timeline-date">September 2022 – November 2026</div><div class="timeline-role">BSc Computer Science</div><div class="timeline-org">Chuka University</div><div class="timeline-desc">currently an undergraduate awating gradution. also selected as the game development lead at She Code Africa.</div></div></div>
+  </div>
+</section>
+
+<!-- RESUME -->
+<section id="resume">
+  <div class="section-label">Resume</div>
+  <h2 class="section-title reveal">Download &amp;<br>connect.</h2>
+  <div class="resume-container">
+    <div class="resume-card reveal">
+      <div class="resume-preview-header"><div class="resume-avatar">B</div><div><div class="resume-preview-name">Bridget Wanjiru Wachira</div><div class="resume-preview-title">Product Designer · Nairobi, KE</div></div></div>
+      <div class="resume-section-mini"><div class="rsm-label">Experience</div><div class="rsm-bar filled" style="width:90%;"></div><div class="rsm-bar filled" style="width:75%;"></div><div class="rsm-bar" style="width:50%;"></div></div>
+      <div class="resume-section-mini"><div class="rsm-label">Education</div><div class="rsm-bar filled" style="width:80%;"></div><div class="rsm-bar" style="width:50%;"></div></div>
+      <div class="resume-section-mini"><div class="rsm-label">Skills &amp; Tools</div><div style="margin-top:6px;"><span class="mini-chip chip-uni">Figma</span><span class="mini-chip chip-afri">Research</span><span class="mini-chip chip-maw">Design Systems</span><span class="mini-chip chip-health">Prototyping</span></div></div>
+    </div>
+    <div class="resume-actions reveal reveal-delay-1">
+      <h3>Ready to collaborate?</h3>
+      <p>Download my full resume or connect with me on LinkedIn. I'm open to  product design roles, design leadership positions, and select consulting projects,that spikes an interest.</p>
+      <div class="resume-btns">
+        <a href="cv.pdf" download="cv" class="btn-primary">↓ Download PDF</a>
+        <a href="https://www.linkedin.com/in/bridgetwachira" target="_blank" class="btn-outline">LinkedIn Profile</a>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- CONTACT -->
+<section id="contact">
+  <div class="section-label">Contact</div>
+  <h2 class="section-title reveal" style="color:#F9F9F9;">Let's build<br>something<br>remarkable.</h2>
+  <div class="contact-grid">
+    <div class="reveal">
+      <p class="contact-tagline">"Design is not just what it looks like and feels like, design is how it works."</p>
+      <div class="contact-links">
+        <a href="mailto:wanjirubridget10@gmail.com" class="contact-link">
+          <div class="contact-link-icon">✉</div>
+          <div>
+            <div style="font-size:0.65rem;font-family:'Syne',sans-serif;letter-spacing:0.08em;text-transform:uppercase;margin-bottom:2px;opacity:0.38;">Email</div>wanjirubridget10@gmail.com
+          </div>
+        </a>
+        <a href="https://www.linkedin.com/in/bridgetwachira" target="_blank" class="contact-link">
+          <div class="contact-link-icon" style="font-size:0.72rem;font-weight:700;font-family:'Syne',sans-serif;">in</div>
+          <div>
+            <div style="font-size:0.65rem;font-family:'Syne',sans-serif;letter-spacing:0.08em;text-transform:uppercase;margin-bottom:2px;opacity:0.38;">LinkedIn</div>/in/bridgetwachira
+          </div>
+        </a>
+      </div>
+    </div>
+    <div class="contact-form reveal reveal-delay-1">
+      <form action="https://formspree.io/f/xjgaepdz" method="POST" class="contact-form reveal">
+        <div class="form-group">
+          <label class="form-label">Your Name</label>
+          <input type="text" name="name" class="form-input" placeholder="Jane Doe" required>
+        </div>
+        <div class="form-group">
+          <label class="form-label">Email</label>
+          <input type="email" name="_replyto" class="form-input" placeholder="jane@company.com" required>
+        </div>
+        <div class="form-group">
+          <label class="form-label">What's on your mind?</label>
+          <textarea name="message" class="form-textarea" name="message" placeholder="Tell me about your project, opportunity, or just say hello…" required></textarea>
+        </div>
+        <button type="submit" class="btn-submit" id="submitBtn">Send Message →</button>
+      </form>
+    </div>
+  </div>
+</section>
+
+<footer>
+  <div class="footer-copy">© 2024 Bridget Wanjiru Wachira · Product Designer, Nairobi KE</div>
+  <div class="footer-links"><a href="#home">Top ↑</a><a href="#projects">Work</a><a href="#contact">Contact</a></div>
+</footer>
+
+<script>
+  // CURSOR
+  const cursor = document.getElementById('cursor');
+  const ring = document.getElementById('cursorRing');
+  let mx=0,my=0,rx=0,ry=0;
+  document.addEventListener('mousemove',e=>{mx=e.clientX;my=e.clientY;cursor.style.left=mx+'px';cursor.style.top=my+'px';});
+  (function animRing(){rx+=(mx-rx)*0.12;ry+=(my-ry)*0.12;ring.style.left=rx+'px';ring.style.top=ry+'px';requestAnimationFrame(animRing);})();
+
+  // NAV + PROGRESS
+  window.addEventListener('scroll',()=>{
+    document.getElementById('nav').classList.toggle('scrolled',scrollY>40);
+    const h=document.documentElement.scrollHeight-innerHeight;
+    document.getElementById('progressFill').style.width=(scrollY/h*100)+'%';
+  });
+
+  // REVEAL
+  const revObs=new IntersectionObserver(entries=>entries.forEach(e=>{if(e.isIntersecting)e.target.classList.add('visible');}),{threshold:0.1});
+  document.querySelectorAll('.reveal').forEach(el=>revObs.observe(el));
+
+  // SKILL TAGS
+  const stEl=document.getElementById('skillTags');
+  if(stEl){const stObs=new IntersectionObserver(e=>{if(e[0].isIntersecting){document.querySelectorAll('.skill-tag').forEach((t,i)=>setTimeout(()=>t.classList.add('visible'),i*65));stObs.disconnect();}},{threshold:0.3});stObs.observe(stEl);}
+
+  // TIMELINE
+  const tl=document.getElementById('timeline');
+  if(tl){const tlObs=new IntersectionObserver(e=>{if(e[0].isIntersecting){tl.classList.add('visible');document.querySelectorAll('.timeline-item').forEach((item,i)=>setTimeout(()=>{item.classList.add('visible');const d=item.querySelector('.timeline-dot');if(d)d.classList.add('active');},i*200));tlObs.disconnect();}},{threshold:0.08});tlObs.observe(tl);}
+
+  // CASE STUDY TABS
+  function openCase(id){
+    document.querySelectorAll('.case-study').forEach(el=>el.classList.remove('active'));
+    document.querySelectorAll('.case-tab').forEach(el=>el.classList.remove('active'));
+    const cs=document.getElementById('cs-'+id);
+    if(cs)cs.classList.add('active');
+    const map={unidash:'UniDash',afrihustle:'AfriHustle',mawingu:'MawinguOps',health:'Healthcare Research'};
+    document.querySelectorAll('.case-tab').forEach(tab=>{if(tab.textContent.trim()===map[id])tab.classList.add('active');});
+    if(cs)setTimeout(()=>cs.querySelectorAll('.reveal').forEach(el=>{el.classList.remove('visible');setTimeout(()=>el.classList.add('visible'),60);}),10);
+    document.getElementById('case-studies').scrollIntoView({behavior:'smooth'});
+  }
+
+  // FLASHCARD SHUFFLE
+  const CARD_COUNT=4;
+  const DOT_COLORS=['var(--proj-uni)','var(--proj-afri)','var(--proj-maw)','var(--proj-health)'];
+  let current=0;
+  const dots=document.querySelectorAll('.flashcard-dot');
+
+  function setDots(i){
+    dots.forEach((d,j)=>{
+      d.style.background = j===i ? DOT_COLORS[j] : 'var(--border)';
+      d.style.transform = j===i ? 'scale(1.5)' : 'scale(1)';
+    });
+  }
+
+  function goTo(next){
+    const prev=document.getElementById('fc-'+current);
+    if(prev){prev.classList.remove('active');prev.classList.add('exit');setTimeout(()=>prev.classList.remove('exit'),700);}
+    current=next;
+    const el=document.getElementById('fc-'+current);
+    if(el)el.classList.add('active');
+    setDots(current);
+  }
+
+  setDots(0);
+  let timer=setInterval(()=>goTo((current+1)%CARD_COUNT),3500);
+  dots.forEach((d,i)=>d.addEventListener('click',()=>{clearInterval(timer);goTo(i);timer=setInterval(()=>goTo((current+1)%CARD_COUNT),3500);}));
+
+  // SUBMIT
+  const sb=document.getElementById('submitBtn');
+  if(sb)sb.addEventListener('click',function(){this.textContent='Sending…';this.style.opacity='0.7';setTimeout(()=>{this.textContent='✓ Sent!';this.style.opacity='1';this.style.background='linear-gradient(135deg,#10B981,#059669)';setTimeout(()=>{this.textContent='Send Message →';this.style.background='';},3000);},1200);});
+</script>
+</body>
+</html>
